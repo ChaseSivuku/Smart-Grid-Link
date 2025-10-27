@@ -1,5 +1,9 @@
 export type UserRole = "admin" | "producer" | "consumer"
 
+export type EnergySourceType = "solar" | "wind" | "hydro" | "biogas" | "hybrid" | "inverter" | "other"
+export type ConnectionType = "residential" | "business" | "community"
+export type PaymentOption = "token" | "credit" | "eft"
+
 export interface User {
   id: string
   email: string
@@ -8,6 +12,27 @@ export interface User {
   address?: string
   isSystemOffline?: boolean
   createdAt: string
+  
+  // Producer-specific fields
+  businessName?: string
+  energySourceType?: EnergySourceType
+  systemCapacity?: number // kW
+  location?: {
+    lat: number
+    lng: number
+    address: string
+  }
+  meterDeviceId?: string
+  bankWalletAddress?: string
+  contactNumber?: string
+  
+  // Consumer-specific fields
+  connectionType?: ConnectionType
+  averageMonthlyUsage?: number // kWh
+  batteryBrand?: string
+  batteryCapacity?: number // kWh
+  preferredPaymentOption?: PaymentOption
+  phoneNumber?: string
 }
 
 export interface AuthState {

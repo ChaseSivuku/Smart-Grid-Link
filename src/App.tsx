@@ -5,6 +5,8 @@ import { ProtectedRoute } from "@/components/ProtectedRoute"
 import { Landing } from "@/pages/Landing"
 import { Login } from "@/pages/Login"
 import { Signup } from "@/pages/Signup"
+import { ProducerSignup } from "@/pages/ProducerSignup"
+import { ConsumerSignup } from "@/pages/ConsumerSignup"
 import { Unauthorized } from "@/pages/Unauthorized"
 import { AdminDashboard } from "@/pages/AdminDashboard"
 import { ProducerDashboard } from "@/pages/ProducerDashboard"
@@ -39,6 +41,8 @@ function App() {
       <Route path="/" element={<Landing />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
+      <Route path="/signup/producer" element={<ProducerSignup />} />
+      <Route path="/signup/consumer" element={<ConsumerSignup />} />
       <Route path="/unauthorized" element={<Unauthorized />} />
 
       {/* Redirect /dashboard to role-specific dashboard */}

@@ -1,5 +1,6 @@
 import { Zap, DollarSign, TrendingDown, Users, Battery, MapPin } from "lucide-react"
 import { ProfileDropdown } from "@/components/ProfileDropdown"
+import { useAuthStore } from "@/store/authStore"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card"
 import { StatCard } from "@/components/StatCard"
 import {
@@ -23,6 +24,7 @@ import {
 } from "recharts"
 
 export function ConsumerDashboard() {
+  const { user } = useAuthStore()
   const formatNumber = (num: number) => {
     return new Intl.NumberFormat("en-US").format(num)
   }
@@ -59,7 +61,9 @@ export function ConsumerDashboard() {
             </div>
             <div className="flex items-center gap-2 px-4 py-2 bg-energy-blue/10 border border-energy-blue/20 rounded-lg">
               <Battery className="w-4 h-4 text-energy-blue" />
-              <span className="text-sm font-medium text-energy-blue">Connected to Grid</span>
+              <span className={`text-sm font-medium ${user?.isSystemOffline ? 'text-red-500' : 'text-energy-blue'}`}>
+                {user?.isSystemOffline ? 'System Offline' : 'Connected to Grid'}
+              </span>
             </div>
             <ProfileDropdown />
           </div>

@@ -1,5 +1,6 @@
 import { Users, Zap, DollarSign, Activity, TrendingUp } from "lucide-react"
 import { ProfileDropdown } from "@/components/ProfileDropdown"
+import { useAuthStore } from "@/store/authStore"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card"
 import { StatCard } from "@/components/StatCard"
 import { systemMetrics, energyTrendsData, userGrowthData, dummyTrades } from "@/services/dummyData"
@@ -17,6 +18,7 @@ import {
 } from "recharts"
 
 export function AdminDashboard() {
+  const { user } = useAuthStore()
   const formatNumber = (num: number) => {
     return new Intl.NumberFormat("en-US").format(num)
   }
@@ -47,7 +49,9 @@ export function AdminDashboard() {
             </div>
             <div className="flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 rounded-lg">
               <Activity className="w-4 h-4 text-primary" />
-              <span className="text-sm font-medium text-primary">System Active</span>
+              <span className={`text-sm font-medium ${user?.isSystemOffline ? 'text-red-500' : 'text-primary'}`}>
+                System {user?.isSystemOffline ? 'Offline' : 'Active'}
+              </span>
             </div>
             <ProfileDropdown />
           </div>

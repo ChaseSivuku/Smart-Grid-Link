@@ -1,5 +1,6 @@
 import { Zap, DollarSign, TrendingUp, Users, Battery, Sun } from "lucide-react"
 import { ProfileDropdown } from "@/components/ProfileDropdown"
+import { useAuthStore } from "@/store/authStore"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card"
 import { StatCard } from "@/components/StatCard"
 import { producerStats, productionData, producerRevenueData, producerSales, topBuyers } from "@/services/dummyData"
@@ -17,6 +18,7 @@ import {
 } from "recharts"
 
 export function ProducerDashboard() {
+  const { user } = useAuthStore()
   const formatNumber = (num: number) => {
     return new Intl.NumberFormat("en-US").format(num)
   }
@@ -38,8 +40,10 @@ export function ProducerDashboard() {
               <p className="text-muted-foreground mt-1">Monitor your energy production and sales</p>
             </div>
             <div className="flex items-center gap-2 px-4 py-2 bg-energy-green/10 border border-energy-green/20 rounded-lg">
-              <div className="w-2 h-2 bg-energy-green rounded-full animate-pulse" />
-              <span className="text-sm font-medium text-energy-green">System Online</span>
+              <div className={`w-2 h-2 rounded-full ${user?.isSystemOffline ? 'bg-red-500' : 'bg-energy-green animate-pulse'}`} />
+              <span className={`text-sm font-medium ${user?.isSystemOffline ? 'text-red-500' : 'text-energy-green'}`}>
+                System {user?.isSystemOffline ? 'Offline' : 'Online'}
+              </span>
             </div>
             <ProfileDropdown />
           </div>

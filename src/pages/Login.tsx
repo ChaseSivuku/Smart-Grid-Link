@@ -1,7 +1,7 @@
 import type React from "react"
 
 import { useState } from "react"
-import { Link, useNavigate, useLocation } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useAuthStore } from "@/store/authStore"
 import { Zap, Mail, Lock, AlertCircle } from "lucide-react"
 
@@ -10,17 +10,33 @@ export function Login() {
   const [password, setPassword] = useState("")
   const { login, isLoading, error, clearError } = useAuthStore()
   const navigate = useNavigate()
-  const location = useLocation()
-
-  const from = (location.state as any)?.from?.pathname || "/dashboard"
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     clearError()
 
     try {
-      await login(email, password)
-      navigate(from, { replace: true })
+      const user = await login(email, password)
+      // Determine where to navigate based on user role
+      let redirectPath = "/dashboard"
+      
+      if (user) {
+        switch (user.role) {
+          case "admin":
+            redirectPath = "/admin/dashboard"
+            break
+          case "producer":
+            redirectPath = "/producer/dashboard"
+            break
+          case "consumer":
+            redirectPath = "/consumer/dashboard"
+            break
+          default:
+            redirectPath = "/login"
+        }
+      }
+      
+      navigate(redirectPath, { replace: true })
     } catch (err) {
       // Error is handled by the store
     }

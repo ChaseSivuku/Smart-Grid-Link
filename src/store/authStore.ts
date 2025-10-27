@@ -7,7 +7,7 @@ interface AuthStore {
   isAuthenticated: boolean
   isLoading: boolean
   error: string | null
-  login: (email: string, password: string) => Promise<void>
+  login: (email: string, password: string) => Promise<User>
   signup: (email: string, password: string, name: string, role: "producer" | "consumer") => Promise<void>
   logout: () => Promise<void>
   updateProfile: (updates: Partial<Pick<User, 'address' | 'isSystemOffline'>>) => Promise<void>
@@ -31,6 +31,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
     try {
       const user = await authService.login(email, password)
       set({ user, isAuthenticated: true, isLoading: false })
+      return user
     } catch (error) {
       set({
         error: error instanceof Error ? error.message : "Login failed",
